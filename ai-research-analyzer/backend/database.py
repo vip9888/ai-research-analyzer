@@ -15,3 +15,10 @@ def get_db(): # Ensures a clean session for querying models like ResearchPaper.
         yield db
     finally:
         db.close()
+
+
+# get_db() is a generator function for handling database sessions.
+# Why?
+# It opens a new session (db = SessionLocal()).
+# yield db lets FastAPI (or other frameworks) use it in routes.
+# db.close() ensures the session is properly closed after use.       

@@ -28,6 +28,20 @@ async def upload_paper(file: UploadFile = File(...), db: Session = Depends(get_d
     db.commit()
     return {"message": "File uploaded successfully", "file_path": file_location}
 
+# @router.post("/upload/") → Defines an HTTP POST endpoint at /upload/.
+# Parameters:
+# file: UploadFile = File(...)
+# UploadFile → Represents the uploaded file.
+# File(...) → Marks it as a required form-data file input.
+# db: Session = Depends(get_db)
+# Injects a database session using dependency injection (get_db() from database.py).
+# This allows database operations inside the function.
+
+# file_location: Defines where the file will be stored (uploads/filename.pdf).
+# with open(file_location, "wb") as buffer:
+# Opens the file in write-binary (wb) mode.
+# shutil.copyfileobj(file.file, buffer) copies file data from memory to disk.
+
 
 # new_paper = ResearchPaper(...):
 # Creates a new database entry using the ResearchPaper ORM model.

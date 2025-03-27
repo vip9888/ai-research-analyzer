@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.orm import Session
 import shutil
-from database import get_db
-from models import ResearchPaper
+from backend.database import get_db
+from backend.models import ResearchPaper
 
 # FastAPI APIRouter (APIRouter()) → Organizes API routes.
 # Depends(get_db) → Injects the database session (db).

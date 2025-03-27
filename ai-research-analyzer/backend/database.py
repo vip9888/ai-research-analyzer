@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "mysql+mysqlconnector://root:Vipul@123@localhost:3306/researchdb"
+DATABASE_URL = "mysql+mysqlconnector://root:Vipul%40123@localhost:3306/college"
 
 engine = create_engine(DATABASE_URL) # create_engine(DATABASE_URL) initializes the database connection, It allows SQLAlchemy to execute SQL queries on MySQL.
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

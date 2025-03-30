@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from database import get_db
-from models import ResearchPaper
-from utils.extract_text import extract_text_from_pdf
-from utils.summarize import generate_summary\
+from backend.database import get_db
+from backend.models import ResearchPaper
+from backend.utils.extract_text import extract_text_from_pdf
+from backend.utils.summarize import generate_summary
 import os
 
 router = APIRouter()
@@ -13,10 +13,10 @@ async def analyze_paper(paper_id: int, db: Session = Depends(get_db)):
     """Fetches and summarizes a research paper."""
     paper = db.query(ResearchPaper).filter(ResearchPaper.id == paper_id).first()
     if not paper:
-        return HTTPExecution(status_code=400, details="PDF file not found on the server")
+        return HTTPExecution(status_code=400, detail="PDF file not found on the server")
 
 
-    if nopt os.path.exists(paper.filepath):
+    if not os.path.exists(paper.filepath):
         raise HTTPException(status_code=400, detail="PDF file not found on the server")
 
     try:
@@ -33,6 +33,12 @@ async def analyze_paper(paper_id: int, db: Session = Depends(get_db)):
         return {"title": paper.title, "summary": summary}
 
 # Rolls back database changes if an error occurs to prevent corrupt data
-    except Execption as e:
+    except Exception as e:
         db.rollback() # Rollback in case of failure
         raise HTTPExecution(status_code=500, detail=f"An error occured: {str(e)}")
+
+
+
+
+
+

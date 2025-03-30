@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from backend.api.routes import upload
-from api.routes import analyze
+from backend.api.routes import analyze
 
 app = FastAPI()
 

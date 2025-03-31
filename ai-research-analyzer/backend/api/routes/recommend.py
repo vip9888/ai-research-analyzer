@@ -44,7 +44,7 @@ def recommend_papers(
     if not paper:
         return {"error": "Paper not found"}
 
-    # Use abstract if available, otherwise extract text from PDF
+    # Use summary if available, otherwise extract text from PDF
     query_text = paper.summary if paper.summary else extract_text_from_pdf(paper.filepath)
     
     # Limit query length for better API results

@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 import shutil
 from backend.database import get_db
 from backend.models import ResearchPaper
+from backend.services.embeddings import generate_embedding
+from backend.utils.vector_store import store_embedding
+from backend.utils.extract_text import extract_text_from_pdf
 
 # FastAPI APIRouter (APIRouter()) → Organizes API routes.
 # Depends(get_db) → Injects the database session (db).
@@ -23,10 +26,19 @@ async def upload_paper(file: UploadFile = File(...), db: Session = Depends(get_d
     with open(file_location, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
+    # Extract text and generate embedding
+    text = extract_text_from_pdf(file_location)
+    embedding = generate_embedding(text)
+
     new_paper = ResearchPaper(title=file.filename, filepath=file_location)
     db.add(new_paper)
     db.commit()
-    return {"message": "File uploaded successfully", "file_path": file_location}
+
+
+    #Store in VectorDB
+    store_embedding(new_paper.id,embedding)
+
+    return {"message": "File uploaded successfully", "file_path": file_location, "paper_id": new_paper.id}
 
 # @router.post("/upload/") → Defines an HTTP POST endpoint at /upload/.
 # Parameters:

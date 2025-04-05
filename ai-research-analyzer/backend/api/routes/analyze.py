@@ -13,7 +13,7 @@ async def analyze_paper(paper_id: int, db: Session = Depends(get_db)):
     """Fetches and summarizes a research paper."""
     paper = db.query(ResearchPaper).filter(ResearchPaper.id == paper_id).first()
     if not paper:
-        return HTTPExecution(status_code=400, detail="PDF file not found on the server")
+        raise HTTPException(status_code=400, detail="PDF file not found on the server")
 
 
     if not os.path.exists(paper.filepath):
@@ -22,6 +22,9 @@ async def analyze_paper(paper_id: int, db: Session = Depends(get_db)):
     try:
         # Extract text from the PDF
         text = extract_text_from_pdf(paper.filepath)
+
+        print(f"[DEBUG] Extracted text length: {len(text)}")
+        print(f"[DEBUG] First 300 chars: {repr(text[:300])}")
 
         # Generate a summary
         summary = generate_summary(text)
@@ -35,7 +38,8 @@ async def analyze_paper(paper_id: int, db: Session = Depends(get_db)):
 # Rolls back database changes if an error occurs to prevent corrupt data
     except Exception as e:
         db.rollback() # Rollback in case of failure
-        raise HTTPExecution(status_code=500, detail=f"An error occured: {str(e)}")
+        print(f"[ERROR] Exception occurred: {e}")
+        raise HTTPException(status_code=500, detail=f"An error occured: {str(e)}")
 
 
 

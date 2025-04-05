@@ -5,7 +5,7 @@ from backend.database import get_db
 from backend.models import ResearchPaper
 from backend.services.embeddings import generate_embedding
 from backend.utils.vector_store import store_embedding
-from backend.utils.extract_text import extract_text_from_pdf
+from backend.utils.extract_text import extract_text_from_pdf, detect_title_from_text
 
 # FastAPI APIRouter (APIRouter()) → Organizes API routes.
 # Depends(get_db) → Injects the database session (db).
@@ -28,9 +28,10 @@ async def upload_paper(file: UploadFile = File(...), db: Session = Depends(get_d
 
     # Extract text and generate embedding
     text = extract_text_from_pdf(file_location)
+    title = detect_title_from_text(text)
     embedding = generate_embedding(text)
 
-    new_paper = ResearchPaper(title=file.filename, filepath=file_location)
+    new_paper = ResearchPaper(title=title, filepath=file_location)
     db.add(new_paper)
     db.commit()
 
@@ -38,7 +39,7 @@ async def upload_paper(file: UploadFile = File(...), db: Session = Depends(get_d
     #Store in VectorDB
     store_embedding(new_paper.id,embedding)
 
-    return {"message": "File uploaded successfully", "file_path": file_location, "paper_id": new_paper.id}
+    return {"message": "File uploaded successfully", "file_path": file_location, "paper_id": new_paper.id, "title": new_paper.title}
 
 # @router.post("/upload/") → Defines an HTTP POST endpoint at /upload/.
 # Parameters:

@@ -18,8 +18,10 @@ from transformers import pipeline, AutoTokenizer
 from keybert import KeyBERT
 
 # Load the summarization pipeline
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
+# summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+# tokenizer = AutoTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
+summarizer = pipeline("summarization", model="Falconsai/text_summarization")
+tokenizer = AutoTokenizer.from_pretrained("Falconsai/text_summarization")
 
 kw_model = KeyBERT()
 

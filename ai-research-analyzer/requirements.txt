@@ -1,0 +1,32 @@
+# ✅ Web & Backend
+fastapi==0.110.1
+uvicorn[standard]==0.29.0
+sqlalchemy==2.0.29
+pydantic==2.6.4
+python-multipart==0.0.9
+requests==2.31.0
+
+# ✅ Frontend
+streamlit==1.32.2
+
+# ✅ NLP & AI
+openai==1.14.3
+sentence-transformers==2.6.1
+keybert==0.8.3
+scikit-learn==1.4.1.post1
+nltk==3.8.1
+transformers==4.39.3
+torch==2.2.1
+
+# ✅ Databases
+mysql-connector-python==8.3.0
+chromadb==0.4.24
+
+# ✅ PDF Processing
+PyMuPDF==1.23.22
+pdfminer.six==20231228
+
+# ✅ Utility & Extras
+python-dotenv==1.0.1
+tqdm==4.66.2
+beautifulsoup4==4.12.3
